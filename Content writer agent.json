@@ -1,0 +1,105 @@
+{
+  "name": "Content writer agent",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "content-writer",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        32,
+        0
+      ],
+      "id": "0fd70049-0e1a-46fd-a125-4b27492738b5",
+      "name": "Webhook",
+      "webhookId": "9036b3e7-81a4-4cf0-a523-2c5b5f34f488"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.topic }}",
+        "options": {
+          "systemMessage": "You are a helpful assistantYou are an expert content writer for small businesses.\n\nWhen given a topic, write:\n1. A catchy headline\n2. An engaging introduction (2-3 sentences)\n3. 3 main points with explanations\n4. A strong conclusion\n5. 3 relevant hashtags for social media\n\nKeep the tone professional but friendly.\nMake it suitable for LinkedIn and Facebook posts.\nWord count: 300-400 words.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "1043abde-53af-4148-976d-c9f07b77e639",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-6",
+          "cachedResultName": "Claude Sonnet 4.6"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.5,
+      "position": [
+        208,
+        96
+      ],
+      "id": "2114ed51-67a6-4c3b-9333-d7b145cc5ad9",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "pyioWGXOtb0Ra461",
+          "name": "Anthropic account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "f47a00f5-3cd3-4fe4-879a-63e5fd28115e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "76310f28f287f67827e96964e205f23daec680ba6cc949573ea2ee14a789e87a"
+  },
+  "id": "LV74SWRqPMbGdJXh",
+  "tags": []
+}
